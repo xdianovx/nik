@@ -11,7 +11,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::withTrashed()->get();
         return view('post.index', compact('posts'));
     }
 
@@ -39,16 +39,44 @@ class PostController extends Controller
         return view('post.show', compact('post'));
     }
 
-
-    public function update()
+    public function edit($id)
     {
-        return ('Обновить пост');
+        $post = Post::findOrFail($id);
+        return view('post.edit', compact('post'));
+    }
+
+    public function update($id, Request $request)
+    {
+        $post = Post::find($id);
+
+
+        $post->update([
+            'title' => $request->title,
+            'description' =>  $request->description,
+            'text' =>  $request->text,
+        ]);
+        $post->save();
+        Session::flash('message', "Успешно отредактировано");
+        return Redirect::back();
     }
 
 
 
-    public function destroy()
+    public function destroy($id)
     {
-        return ('Удалить пост');
+        $post = Post::find($id);
+
+        $post->delete();
+        Session::flash('message', "Успешно удален");
+        return Redirect::route('post.index');
+    }
+
+    public function restore($id)
+    {
+        $post = Post::withTrashed($id);
+
+        $post->restore();
+
+        return Redirect::back();
     }
 }

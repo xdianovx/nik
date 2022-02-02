@@ -25,6 +25,10 @@ Route::prefix('post')->group(function () {
     Route::get('/create', [PostController::class, 'create'])->name('post.create');
     Route::post('/', [PostController::class, 'store'])->name('post.store');
     Route::get('/{id}', [PostController::class, 'show'])->name('post.show');
+    Route::get('/{id}/edit', [PostController::class, 'edit'])->name('post.edit');
+    Route::patch('/{id}', [PostController::class, 'update'])->name('post.update');
+    Route::delete('/{id}/delete', [PostController::class, 'destroy'])->name('post.destroy');
+    Route::get('/{id}/restore', [PostController::class, 'restore'])->name('post.restore');
 });
 
 

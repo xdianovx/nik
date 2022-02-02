@@ -20,6 +20,7 @@ class CreatePostsTable extends Migration
             $table->text('description');
             $table->text('text')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
